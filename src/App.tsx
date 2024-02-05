@@ -81,6 +81,7 @@ const BingoTable = React.memo(function BingoTable({
             text={shuffledPhrases[index] ?? ""}
             onChangeText={(value) => setPhrase(index, value)}
             className="cell-input"
+            multiline
           />
         </div>
       ))}
@@ -297,6 +298,7 @@ function BingoCard({ shuffled }: { shuffled?: boolean }) {
             style={{
               fontSize: "3rem",
               fontFamily,
+              width: "100%",
             }}
           />
         </h2>
@@ -312,27 +314,45 @@ function EditableText({
   id,
   className,
   style,
+  multiline = false,
 }: {
   text: string;
   onChangeText: (value: string) => void;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
+  multiline?: boolean;
 }) {
-  return (
-    <input
-      type="text"
-      id={id}
-      value={text}
-      onChange={React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(
-        (event) => {
-          onChangeText(event.target.value);
-        },
-        [onChangeText],
-      )}
-      autoFocus
-      className={classNames("editable-text", className)}
-      style={style}
-    />
+  const onChange = React.useCallback<
+    React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>
+  >(
+    (event) => {
+      onChangeText(event.target.value);
+    },
+    [onChangeText],
   );
+  if (multiline) {
+    return (
+      <textarea
+        id={id}
+        onChange={onChange}
+        className={classNames("editable-text", className)}
+        style={style}
+      >
+        {text}
+      </textarea>
+    );
+  } else {
+    return (
+      <input
+        type="text"
+        id={id}
+        value={text}
+        onChange={onChange}
+        autoFocus
+        className={classNames("editable-text", className)}
+        style={style}
+      />
+    );
+  }
 }
