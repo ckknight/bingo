@@ -13,6 +13,7 @@ interface AppState {
     cfg?: string;
     gap?: number;
     gbg?: string;
+    font?: string;
   };
 }
 

@@ -11,6 +11,10 @@
   background: none;
 }
 
+.css-variables-provider {
+  font: var(--font, 1rem/1.5 sans-serif);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(var(--column-count), 1fr);
@@ -23,7 +27,6 @@
 
 .cell {
   aspect-ratio: var(--ar, 1);
-  font: var(--cell-font, 1rem/1.5 sans-serif);
   background: var(--cbg, white);
   border: calc(var(--gap, 1) * 1px) solid var(--gbg, black);
   border-top: none;
@@ -35,6 +38,7 @@
 
   color: var(--cfg, black);
   text-align: center;
+  font: var(--font, 1rem/1.5 sans-serif);
 }
 
 @media print {
