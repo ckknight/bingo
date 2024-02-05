@@ -334,7 +334,7 @@ function EditableText({
   if (multiline) {
     return (
       <ContentEditableText
-        initialText={text}
+        text={text}
         onChangeText={onChangeText}
         id={id}
         style={style}
@@ -357,27 +357,26 @@ function EditableText({
 }
 
 function ContentEditableText({
-  initialText,
+  text: text,
   onChangeText,
   id,
   className,
   style,
 }: {
-  initialText: string;
+  text: string;
   onChangeText: (value: string) => void;
   id?: string;
   className?: string;
   style?: React.CSSProperties;
 }) {
   const ref = React.useRef<HTMLDivElement>(null);
-  const setInitialTextRef = React.useRef(false);
+  const lastTextRef = React.useRef("");
   React.useEffect(() => {
-    if (ref.current && !setInitialTextRef.current) {
-      ref.current.textContent = initialText;
-      setInitialTextRef.current = true;
+    if (ref.current && lastTextRef.current !== text) {
+      ref.current.textContent = text;
+      lastTextRef.current = text;
     }
-  }, [initialText]);
-  const lastTextRef = React.useRef(initialText);
+  }, [text]);
   const emitChange = React.useCallback(() => {
     if (ref.current != null) {
       const newText = ref.current.textContent ?? "";
