@@ -333,14 +333,13 @@ function EditableText({
   );
   if (multiline) {
     return (
-      <textarea
+      <ContentEditableText
+        initialText={text}
+        onChangeText={onChangeText}
         id={id}
-        onChange={onChange}
-        className={classNames("editable-text", className)}
         style={style}
-      >
-        {text}
-      </textarea>
+        className={classNames("editable-text", className)}
+      />
     );
   } else {
     return (
@@ -355,4 +354,50 @@ function EditableText({
       />
     );
   }
+}
+
+function ContentEditableText({
+  initialText,
+  onChangeText,
+  id,
+  className,
+  style,
+}: {
+  initialText: string;
+  onChangeText: (value: string) => void;
+  id?: string;
+  className?: string;
+  style?: React.CSSProperties;
+}) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const setInitialTextRef = React.useRef(false);
+  React.useEffect(() => {
+    if (ref.current && !setInitialTextRef.current) {
+      ref.current.textContent = initialText;
+      setInitialTextRef.current = true;
+    }
+  }, [initialText]);
+  const lastTextRef = React.useRef(initialText);
+  const emitChange = React.useCallback(() => {
+    if (ref.current != null) {
+      const newText = ref.current.textContent ?? "";
+      if (newText !== lastTextRef.current) {
+        lastTextRef.current = newText;
+        onChangeText(newText);
+      }
+    }
+  }, [onChangeText]);
+  return (
+    <div
+      ref={ref}
+      id={id}
+      className={className}
+      style={style}
+      contentEditable="plaintext-only"
+      onInput={emitChange}
+      onBlur={emitChange}
+      onKeyUp={emitChange}
+      onKeyDown={emitChange}
+    />
+  );
 }
