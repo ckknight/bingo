@@ -1,0 +1,54 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.editable-text {
+  text-align: center;
+  border: none;
+  background: none;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(var(--column-count), 1fr);
+  /* gap: calc(var(--gap, 1) * 1px); */
+  border: calc(var(--gap, 1) * 1px) solid var(--gbg, black);
+  border-right: none;
+  border-bottom: none;
+  /* background: var(--gbg, black); */
+}
+
+.cell {
+  aspect-ratio: var(--ar, 1);
+  font: var(--cell-font, 1rem/1.5 sans-serif);
+  background: var(--cbg, white);
+  border: calc(var(--gap, 1) * 1px) solid var(--gbg, black);
+  border-top: none;
+  border-left: none;
+}
+.cell-input {
+  width: 100%;
+  height: 100%;
+
+  color: var(--cfg, black);
+  text-align: center;
+}
+
+@media print {
+  .controls {
+    display: none;
+  }
+}
+
+@media only screen {
+  .print-only {
+    display: none;
+  }
+}
+
+.print-break {
+  page-break-after: always;
+}
